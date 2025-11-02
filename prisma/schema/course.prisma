@@ -1,0 +1,52 @@
+model Course {
+    id           String       @id @default(cuid())
+    title        String
+    slug         String       @unique
+    description  String?
+    price        Int
+    createdAt    DateTime     @default(now())
+    enrollments  Enrollment[]
+    instructor   Instructor?  @relation(fields: [instructorId], references: [id])
+    instructorId String?
+
+    @@map("courses")
+}
+
+model Enrollment {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String
+    course    Course   @relation(fields: [courseId], references: [id])
+    courseId  String
+    createdAt DateTime @default(now())
+
+    @@map("enrollments")
+}
+
+model Media {
+    id           String   @id @default(cuid())
+    url          String
+    filename     String
+    size         Int
+    mimeType     String
+    uploadedBy   Admin?   @relation(fields: [uploadedById], references: [id])
+    uploadedById String?
+    createdAt    DateTime @default(now())
+
+    @@map("medias")
+}
+
+model Review {
+    id        String   @id @default(cuid())
+    rating    Int
+    comment   String?
+    createdAt DateTime @default(now())
+
+    user   User   @relation(fields: [userId], references: [id])
+    userId String
+
+    instructor   Instructor @relation(fields: [instructorId], references: [id])
+    instructorId String
+
+    @@map("reviews")
+}

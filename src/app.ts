@@ -2,6 +2,9 @@ import express, { Application, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import config from './config';
+import globalErrorHandler from './app/middlewares/globalErrorHandler';
+import notFound from './app/middlewares/notFound';
+import router from './app/routes';
 
 const app: Application = express();
 
@@ -21,7 +24,7 @@ app.use(cookieParser())
 
 
 
-// app.use("/api/v1", router)
+app.use("/api/v1", router)
 
 app.get('/', (req: Request, res: Response) => {
     res.send({
@@ -33,8 +36,8 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 
-// app.use(globalErrorHandler);
+app.use(globalErrorHandler);
 
-// app.use(notFound);
+app.use(notFound);
 
 export default app;

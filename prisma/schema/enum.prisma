@@ -1,6 +1,7 @@
 enum UserRole {
     USER
     STUDENT
+    INSTRUCTOR
     ADMIN
 }
 
@@ -8,4 +9,8 @@ enum UserStatus {
     ACTIVE
     INACTIVE
     DELETED
+}
+enum Gender {
+    MALE
+    FEMALE
 }

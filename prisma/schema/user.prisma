@@ -1,13 +1,72 @@
 model User {
-    id                 String     @id @default(uuid())
-    email              String     @unique
+    id                 String       @id @default(uuid())
+    email              String       @unique
     password           String
-    role               UserRole   @default(USER)
-    needPasswordChange Boolean    @default(true)
-    status             UserStatus @default(ACTIVE)
-    createdAt          DateTime   @default(now())
-    updatedAt          DateTime   @updatedAt
-    
-
+    role               UserRole     @default(USER)
+    needPasswordChange Boolean      @default(true)
+    status             UserStatus   @default(ACTIVE)
+    createdAt          DateTime     @default(now())
+    updatedAt          DateTime     @updatedAt
+    admin              Admin?
+    student            Student?
+    enrollments        Enrollment[]
+    instructor         Instructor?
+   reviews          Review[]
     @@map("users")
+}
+
+model Admin {
+    id            String   @id @default(uuid())
+    name          String
+    email         String   @unique
+    profilePhoto  String?
+    contactNumber String?
+    isDeleted     Boolean  @default(false)
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+
+    user   User    @relation(fields: [email], references: [email])
+    medias Media[]
+
+    @@map("admins")
+}
+
+model Student {
+    id                 String   @id @default(uuid())
+    name               String
+    email              String   @unique
+    profilePhoto       String?
+    contactNumber      String?
+    address            String?
+    registrationNumber String
+    gender             Gender
+    class              String?
+    isDeleted          Boolean  @default(false)
+    createdAt          DateTime @default(now())
+    updatedAt          DateTime @updatedAt
+
+    user User @relation(fields: [email], references: [email])
+
+    @@map("students")
+}
+
+model Instructor {
+    id             String   @id @default(uuid())
+    name           String
+    email          String   @unique
+    profilePhoto   String?
+    contactNumber  String?
+    address        String?
+    specialization String? // যেমন: Graphic Design, Web Development, etc.
+    experience     Int? // অভিজ্ঞতা (বছরে)
+    bio            String? // সংক্ষিপ্ত বর্ণনা
+    isDeleted      Boolean  @default(false)
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+
+    user    User     @relation(fields: [email], references: [email], onDelete: Cascade)
+    courses Course[]
+    reviews Review[]
+
+    @@map("instructors")
 }
