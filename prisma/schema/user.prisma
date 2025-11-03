@@ -11,7 +11,8 @@ model User {
     student            Student?
     enrollments        Enrollment[]
     instructor         Instructor?
-   reviews          Review[]
+    reviews            Review[]
+
     @@map("users")
 }
 
